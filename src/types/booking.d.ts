@@ -55,6 +55,7 @@ export interface BookingQuery {
   page?: number;
   limit?: number;
   sortBy?: string;
+  search?: string;
 }
 
 export interface BookingListResponse {
