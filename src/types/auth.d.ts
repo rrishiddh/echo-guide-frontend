@@ -25,6 +25,12 @@ export interface AuthUser {
   isVerified: boolean;
   isActive: boolean;
 }
+export interface GuideUser extends AuthUser {
+  bio?: string;
+  languagesSpoken?: string[];
+  expertise?: string[];
+  dailyRate?: number;
+}
 
 export interface AuthResponse {
   user: AuthUser;
