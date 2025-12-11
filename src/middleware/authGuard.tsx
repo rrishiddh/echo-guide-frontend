@@ -1,10 +1,12 @@
 "use client";
 
+import type React from "react";
+
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/hooks/useAuth";
-import LoadingScreen from "@/components/common/LoadingScreen";
+import LoadingScreen from "../components/common/LoadingScreen";
 import { AUTH_ROUTES } from "../constants";
+import { useAuth } from "../hooks/useAuth";
 
 interface AuthGuardProps {
   children: React.ReactNode;
@@ -48,14 +50,14 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({
   return <>{children}</>;
 };
 
-export const withAuth = <P extends object>(
+export const withAuth = <P extends Record<string, unknown>>(
   Component: React.ComponentType<P>,
   options?: {
     requireAuth?: boolean;
     redirectTo?: string;
   }
-) => {
-  const WrappedComponent = (props: P) => {
+): React.FC<P> => {
+  const WrappedComponent: React.FC<P> = (props: P) => {
     return (
       <AuthGuard
         requireAuth={options?.requireAuth}
@@ -67,7 +69,7 @@ export const withAuth = <P extends object>(
   };
 
   WrappedComponent.displayName = `withAuth(${
-    Component.displayName || Component.name
+    Component.displayName || Component.name || "Component"
   })`;
 
   return WrappedComponent;

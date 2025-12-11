@@ -1,14 +1,15 @@
-import { Metadata } from "next";
+'use client';
+// import { Metadata } from "next";
 import PageHeader from "@/src/components/common/PageHeader";
 import ProtectedRoute from "@/src/components/common/ProtectedRoute";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Download, FileText, Calendar, TrendingUp } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Reports | Admin Dashboard",
-  description: "Generate and download platform reports",
-};
+// export const metadata: Metadata = {
+//   title: "Reports | Admin Dashboard",
+//   description: "Generate and download platform reports",
+// };
 
 const AdminReportsPage = () => {
   const reports = [

@@ -2,9 +2,9 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/hooks/useAuth";
-import LoadingScreen from "@/components/common/LoadingScreen";
+import LoadingScreen from "../components/common/LoadingScreen";
 import { isAdmin, isGuide, isTourist, UserRole, DASHBOARD_ROUTES } from "../constants";
+import { useAuth } from "../hooks/useAuth";
 
 interface RoleGuardProps {
   children: React.ReactNode;

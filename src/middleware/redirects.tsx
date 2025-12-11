@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { useAuth } from "@/hooks/useAuth";
 import { AUTH_ROUTES,getDashboardRoute,PUBLIC_ROUTES } from "../constants";
+import { useAuth } from "../hooks/useAuth";
 
 export const useAuthRedirect = () => {
   const router = useRouter();
@@ -51,7 +52,7 @@ export const RedirectToLogin: React.FC = () => {
 
   useEffect(() => {
     redirectToLogin(window.location.pathname);
-  }, []);
+  }, [redirectToLogin]);
 
   return null;
 };
@@ -61,7 +62,7 @@ export const RedirectToDashboard: React.FC = () => {
 
   useEffect(() => {
     redirectToDashboard();
-  }, []);
+  }, [redirectToDashboard]);
 
   return null;
 };
@@ -76,7 +77,7 @@ export const RedirectIfAuthenticated: React.FC<{
     if (isAuthenticated && user) {
       redirectToDashboard();
     }
-  }, [isAuthenticated, user]);
+  }, [isAuthenticated, redirectToDashboard, user]);
 
   if (isAuthenticated) {
     return null;

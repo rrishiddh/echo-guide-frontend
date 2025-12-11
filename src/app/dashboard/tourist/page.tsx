@@ -1,5 +1,6 @@
 
-import { Metadata } from "next";
+'use client';
+// import { Metadata } from "next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 // import { BookingCard } from "@/components/cards/BookingCard";
@@ -11,10 +12,10 @@ import PastBookings from "@/src/components/bookings/PastBookings";
 import UpcomingBookings from "@/src/components/bookings/UpcomingBookings";
 import PageHeader from "@/src/components/common/PageHeader";
 
-export const metadata: Metadata = {
-  title: "Tourist Dashboard | Echo Guide",
-  description: "Manage your tours and bookings",
-};
+// export const metadata: Metadata = {
+//   title: "Tourist Dashboard | Echo Guide",
+//   description: "Manage your tours and bookings",
+// };
 
 const TouristDashboardPage = () => {
   const stats = [

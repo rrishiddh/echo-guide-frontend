@@ -1,4 +1,5 @@
-import { Metadata } from "next";
+'use client';
+// import { Metadata } from "next";
 import PageHeader from "@/src/components/common/PageHeader";
 import ProtectedRoute from "@/src/components/common/ProtectedRoute";
 import { MapPin, Calendar, Star, DollarSign } from "lucide-react";
@@ -8,10 +9,10 @@ import RecentActivity from "@/src/components/dashboard/RecentActivity";
 import QuickActions from "@/src/components/dashboard/QuickActions";
 import UpcomingBookings from "@/src/components/bookings/UpcomingBookings";
 
-export const metadata: Metadata = {
-  title: "Guide Dashboard | Echo Guide",
-  description: "Manage your tours and bookings",
-};
+// export const metadata: Metadata = {
+//   title: "Guide Dashboard | Echo Guide",
+//   description: "Manage your tours and bookings",
+// };
 
 const GuideDashboardPage = () => {
 const stats = [

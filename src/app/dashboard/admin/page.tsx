@@ -1,4 +1,5 @@
-import { Metadata } from "next";
+'use client';
+// import { Metadata } from "next";
 import { Users, MapPin, Calendar, DollarSign } from "lucide-react";
 import PageHeader from "@/src/components/common/PageHeader";
 import ProtectedRoute from "@/src/components/common/ProtectedRoute";
@@ -7,10 +8,10 @@ import BookingChart from "@/src/components/dashboard/BookingChart";
 import ActivityFeed from "@/src/components/dashboard/ActivityFeed";
 import StatsGrid, { StatItem } from "@/src/components/dashboard/StatsGrid";
 
-export const metadata: Metadata = {
-  title: "Admin Dashboard | Echo Guide",
-  description: "Manage your platform",
-};
+// export const metadata: Metadata = {
+//   title: "Admin Dashboard | Echo Guide",
+//   description: "Manage your platform",
+// };
 
 const AdminDashboardPage = () => {
 const stats: StatItem[] = [
