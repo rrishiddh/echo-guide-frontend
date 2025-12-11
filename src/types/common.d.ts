@@ -128,3 +128,22 @@ export interface AvailabilitySlot {
   maxCapacity?: number;
   currentBookings?: number;
 }
+
+export interface Guide {
+  id: string;
+  name: string;
+  email: string;
+  profilePic: string;
+  bio: string;
+  languagesSpoken: string[];
+  expertise: string[];
+  dailyRate: number;
+  isVerified: boolean;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;   
+  averageRating: number;
+  totalReviews: number;
+  totalTours: number;
+  role: "guide";
+}
