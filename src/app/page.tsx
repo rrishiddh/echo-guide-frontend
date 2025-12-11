@@ -1,65 +1,237 @@
-import Image from "next/image";
 
-export default function Home() {
+import { Metadata } from "next";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Users,
+  MapPin,
+  Star,
+  Globe,
+  TrendingUp,
+  Zap,
+  Heart,
+  Award,
+} from "lucide-react";
+import Link from "next/link";
+import FeaturedListings from "../components/listings/FeaturedListings";
+import RecentListings from "../components/listings/RecentListings";
+import PopularListings from "../components/listings/PopularListings";
+
+export const metadata: Metadata = {
+  title: "Echo Guide - Connect with Local Experts",
+  description:
+    "Discover authentic tours and experiences with passionate local guides from around the world.",
+};
+
+const HomePage = () => {
+  const stats = [
+    { label: "Active Guides", value: "1,200+", icon: Users },
+    { label: "Happy Travelers", value: "50,000+", icon: Heart },
+    { label: "Tours Completed", value: "75,000+", icon: Globe },
+    { label: "Avg. Rating", value: "4.8/5", icon: Star },
+  ];
+
+  const features = [
+    {
+      icon: MapPin,
+      title: "Authentic Experiences",
+      description: "Real connections between travelers and local experts",
+    },
+    {
+      icon: Users,
+      title: "Verified Guides",
+      description: "All guides are verified and background checked",
+    },
+    {
+      icon: Zap,
+      title: "Easy Booking",
+      description: "Simple and secure booking process",
+    },
+    {
+      icon: Globe,
+      title: "Global Community",
+      description: "Guides and travelers from 150+ countries",
+    },
+    {
+      icon: TrendingUp,
+      title: "Earn Money",
+      description: "Guides can earn up to 85% per booking",
+    },
+    {
+      icon: Award,
+      title: "Support",
+      description: "24/7 customer support for all users",
+    },
+  ];
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="min-h-screen">
+      <section className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-20 md:py-32">
+        <div className="container px-4">
+          <div className="max-w-3xl mx-auto text-center space-y-6">
+            <h1 className="text-5xl md:text-6xl font-bold leading-tight">
+              Connect with Local Experts
+            </h1>
+            <p className="text-xl md:text-2xl text-blue-100">
+              Discover authentic tours and experiences from passionate local guides around the world
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
+              <Link href="/listings">
+                <Button size="lg" variant="secondary" className="w-full sm:w-auto">
+                  Explore Tours
+                </Button>
+              </Link>
+              <Link href="/become-guide">
+                <Button
+                  size="lg"
+                  className="w-full sm:w-auto bg-white text-blue-600 hover:bg-blue-50"
+                >
+                  Become a Guide
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-gray-50 py-16">
+        <div className="container px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {stats.map((stat) => (
+              <Card key={stat.label}>
+                <CardContent className="p-6 text-center">
+                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                    <stat.icon className="w-6 h-6 text-blue-600" />
+                  </div>
+                  <p className="text-3xl font-bold text-gray-900 mb-2">
+                    {stat.value}
+                  </p>
+                  <p className="text-gray-600">{stat.label}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16">
+        <div className="container px-4">
+          <FeaturedListings />
+        </div>
+      </section>
+
+      <section className="py-16">
+        <div className="container px-4">
+          <PopularListings />
+        </div>
+      </section>
+
+      <section className="py-16">
+        <div className="container px-4">
+          <RecentListings />
+        </div>
+      </section>
+
+      <section className="py-16">
+        <div className="container px-4">
+          <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">
+            Why Choose Echo Guide?
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {features.map((feature) => (
+              <Card key={feature.title}>
+                <CardContent className="p-6">
+                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                    <feature.icon className="w-6 h-6 text-blue-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-600">{feature.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-16">
+        <div className="container px-4 text-center space-y-6">
+          <h2 className="text-3xl md:text-4xl font-bold">
+            Ready to Start Your Journey?
+          </h2>
+          <p className="text-xl text-blue-100 max-w-2xl mx-auto">
+            Join thousands of travelers discovering authentic experiences, or share your passion as a local guide
           </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/listings">
+              <Button size="lg" variant="secondary" className="w-full sm:w-auto">
+                Browse Tours
+              </Button>
+            </Link>
+            <Link href="/become-guide">
+              <Button
+                size="lg"
+                className="w-full sm:w-auto bg-white text-blue-600 hover:bg-blue-50"
+              >
+                Start Guiding
+              </Button>
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      <section className="py-16 bg-gray-50">
+        <div className="container px-4">
+          <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">
+            What Our Community Says
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                name: "Sarah Johnson",
+                role: "Traveler",
+                text: "The best travel experience I've ever had. Meeting local guides made me see cities completely differently.",
+                rating: 5,
+              },
+              {
+                name: "Marco Rossi",
+                role: "Guide",
+                text: "Echo Guide has changed my life. I love sharing my city and earning good money doing what I'm passionate about.",
+                rating: 5,
+              },
+              {
+                name: "Emma Chen",
+                role: "Traveler",
+                text: "Authentic, safe, and affordable. This is exactly what I was looking for in travel experiences.",
+                rating: 5,
+              },
+            ].map((testimonial) => (
+              <Card key={testimonial.name}>
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-1 mb-4">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className="w-5 h-5 fill-yellow-400 text-yellow-400"
+                      />
+                    ))}
+                  </div>
+                  <p className="text-gray-700 mb-4">{testimonial.text}</p>
+                  <div>
+                    <p className="font-semibold text-gray-900">
+                      {testimonial.name}
+                    </p>
+                    <p className="text-sm text-gray-600">{testimonial.role}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
-      </main>
+      </section>
     </div>
   );
-}
+};
+
+export default HomePage;
