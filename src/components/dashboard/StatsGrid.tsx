@@ -6,7 +6,7 @@ import { TrendingUp, TrendingDown } from "lucide-react";
 import { StaggerChildren, StaggerItem } from "../animations/StaggerChildren";
 import AnimatedCounter from "../animations/AnimatedCounter";
 
-interface StatItem {
+export interface StatItem {
   label: string;
   value: number | string;
   icon: LucideIcon;
