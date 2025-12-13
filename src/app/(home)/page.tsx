@@ -13,9 +13,9 @@ import {
   Award,
 } from "lucide-react";
 import Link from "next/link";
-import FeaturedListings from "../components/listings/FeaturedListings";
-import RecentListings from "../components/listings/RecentListings";
-import PopularListings from "../components/listings/PopularListings";
+import FeaturedListings from "@/src/components/listings/FeaturedListings";
+import RecentListings from "@/src/components/listings/RecentListings";
+import PopularListings from "@/src/components/listings/PopularListings";
 
 export const metadata: Metadata = {
   title: "Echo Guide - Connect with Local Experts",

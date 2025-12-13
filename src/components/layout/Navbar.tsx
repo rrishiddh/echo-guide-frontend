@@ -75,9 +75,7 @@ export const Navbar = () => {
               </>
             ) : (
               <>
-                <Link href="/bookings">
-                  <Button variant="ghost">My Bookings</Button>
-                </Link>
+                
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button className="flex items-center gap-2 hover:opacity-80 transition-opacity">

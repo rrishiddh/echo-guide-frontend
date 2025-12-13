@@ -9,12 +9,12 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Loader2, AlertCircle,  X } from "lucide-react";
+import { Loader2, AlertCircle, X } from "lucide-react";
 import { toast } from "sonner";
 import Image from "next/image";
 import { useListings } from "@/src/hooks/useListings";
 import { useCloudinary } from "@/src/hooks/useCloudinary";
-import { Listing,TourCategory } from "@/src/types";
+import { Listing, TourCategory } from "@/src/types";
 import { TOUR_CATEGORIES } from "@/src/constants";
 
 interface ListingFormProps {
@@ -31,8 +31,8 @@ export const ListingForm = ({ listing, onSuccess }: ListingFormProps) => {
     title: "",
     description: "",
     itinerary: "",
-    tourFee: 0,
-    duration: 0,
+    tourFee: 20,
+    duration: 20,
     meetingPoint: "",
     maxGroupSize: 1,
     category: [] as TourCategory[],
@@ -41,36 +41,48 @@ export const ListingForm = ({ listing, onSuccess }: ListingFormProps) => {
   });
   const [images, setImages] = useState<File[]>([]);
   const [existingImages, setExistingImages] = useState<string[]>([]);
+  const [uploadedImageUrls, setUploadedImageUrls] = useState<string[]>([]);
 
-useEffect(() => {
-  if (listing) {
-    queueMicrotask(() => {
-      setFormData({
-        title: listing.title,
-        description: listing.description,
-        itinerary: listing.itinerary,
-        tourFee: listing.tourFee,
-        duration: listing.duration,
-        meetingPoint: listing.meetingPoint,
-        maxGroupSize: listing.maxGroupSize,
-        category: listing.category || [],
-        city: listing.city,
-        country: listing.country,
+  useEffect(() => {
+    if (listing) {
+      queueMicrotask(() => {
+        setFormData({
+          title: listing.title,
+          description: listing.description,
+          itinerary: listing.itinerary,
+          tourFee: listing.tourFee,
+          duration: listing.duration,
+          meetingPoint: listing.meetingPoint,
+          maxGroupSize: listing.maxGroupSize,
+          category: listing.category || [],
+          city: listing.city,
+          country: listing.country,
+        });
+        setExistingImages(listing.images || []);
       });
-      setExistingImages(listing.images || []);
-    });
-  }
-}, [listing]);
+    }
+  }, [listing]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
+    const { name, value } = e.target;
+    setError("");
+
+    const isNumberField = ["tourFee", "duration", "maxGroupSize"].includes(name);
+
+    let updatedValue: string | number = value;
+
+    if (isNumberField) {
+      updatedValue = value === "" ? 0 : parseFloat(value);
+    }
+    
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: updatedValue,
     });
-    setError("");
   };
+
   const handleCategoryChange = (category: TourCategory, checked: boolean) => {
     setFormData({
       ...formData,
@@ -79,34 +91,55 @@ useEffect(() => {
         : formData.category.filter((c) => c !== category),
     });
   };
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setImages(Array.from(e.target.files));
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+
+    const files = Array.from(e.target.files);
+
+    try {
+      const uploads = await uploadMultipleToCloudinary(files);
+      const urls = uploads.map((u) => u.url);
+
+      setUploadedImageUrls((prev) => [...prev, ...urls]);
+      toast.success("Images uploaded!");
+    } catch (err) {
+      toast.error("Image upload failed");
     }
   };
+
   const removeExistingImage = (image: string) => {
     setExistingImages(existingImages.filter((img) => img !== image));
   };
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
     if (!formData.title || !formData.description || !formData.itinerary) {
       setError("Please fill in all required fields");
       return;
     }
-
     if (formData.category.length === 0) {
       setError("Please select at least one category");
       return;
     }
+    if (formData.tourFee <= 0) {
+      setError("Tour Fee must be greater than 0");
+      return;
+    }
+    if (formData.duration <= 0) {
+      setError("Duration must be greater than 0");
+      return;
+    }
+    if (formData.maxGroupSize <= 0) {
+      setError("Max Group Size must be at least 1");
+      return;
+    }
+
 
     try {
-      let uploadedImages = existingImages;
-
-      if (images.length > 0) {
-        const uploads = await uploadMultipleToCloudinary(images);
-        uploadedImages = [...existingImages, ...uploads.map((u) => u.url)];
-      }
+      const uploadedImages = [...existingImages, ...uploadedImageUrls];
 
       const listingData = {
         ...formData,
@@ -121,15 +154,12 @@ useEffect(() => {
         toast.success("Listing created successfully");
       }
 
-      if (onSuccess) {
-        onSuccess();
-      } else {
-        router.push("/dashboard/guide/listings");
-      }
+      onSuccess ? onSuccess() : router.push("/dashboard/guide/listings");
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to save listing");
     }
   };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {error && (

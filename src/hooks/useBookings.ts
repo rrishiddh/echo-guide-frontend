@@ -37,7 +37,7 @@ export const useBookings = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await bookingService.getMyBookings(query);
+      const response = await bookingService?.getMyBookings(query);
       setBookings(response.bookings);
       setTotal(response.meta.total);
       return response;

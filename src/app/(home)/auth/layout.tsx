@@ -1,15 +1,10 @@
-import { Metadata } from "next";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
 }
 
-export const metadata: Metadata = {
-  title: "Authentication | Echo Guide",
-  description: "Login and register to Echo Guide",
-};
+
 
 const AuthLayout = ({ children }: AuthLayoutProps) => {
   return (

@@ -73,14 +73,8 @@ export const STRIPE_CONFIG = {
   publishableKey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "",
 };
 
-export const GOOGLE_MAPS_CONFIG = {
-  apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
-};
 
-export const ANALYTICS_CONFIG = {
-  googleAnalyticsId: process.env.NEXT_PUBLIC_GA_ID || "",
-  enableTracking: process.env.NODE_ENV === "production",
-};
+
 
 export const IS_PRODUCTION = process.env.NODE_ENV === "production";
 export const IS_DEVELOPMENT = process.env.NODE_ENV === "development";

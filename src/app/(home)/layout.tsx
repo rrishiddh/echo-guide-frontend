@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Toaster } from "sonner";
-import "./globals.css";
-import Navbar from "../components/layout/Navbar";
-import Footer from "../components/layout/Footer";
-import ErrorBoundary from "../components/common/ErrorBoundary";
+import "../globals.css";
+import ErrorBoundary from "@/src/components/common/ErrorBoundary";
+import Navbar from "@/src/components/layout/Navbar";
+import Footer from "@/src/components/layout/Footer";
+
 
 export const metadata: Metadata = {
   title: "Echo Guide - Connect with Local Experts",

@@ -38,7 +38,12 @@ class UserService {
     };
   }
 
-  async getGuides(query: UserQuery): Promise<UserListResponse> {
+  async getGuides(query: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  sortBy?: string;
+}): Promise<UserListResponse> {
     const response = await apiService.get<GuideProfile[]>(
       USER_ENDPOINTS.GUIDES,
       { params: query }
@@ -47,6 +52,7 @@ class UserService {
       users: response.data.data!,
       meta: response.data.meta as any,
     };
+    
   }
 
   async searchGuides(filters: any): Promise<UserListResponse> {

@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Plus, MapPin, Eye, Edit, Trash2 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "My Listings | Guide Dashboard",
@@ -86,9 +87,10 @@ const GuideListingsPage = () => {
                       className="p-4 border rounded-lg hover:border-blue-500 transition-all"
                     >
                       <div className="flex flex-col md:flex-row gap-4">
-                        <img
+                        <Image
                           src={listing.image}
                           alt={listing.title}
+                          fill
                           className="w-full md:w-32 h-32 object-cover rounded-lg"
                         />
                         <div className="flex-1">

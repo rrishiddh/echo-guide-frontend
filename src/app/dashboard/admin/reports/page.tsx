@@ -5,6 +5,7 @@ import ProtectedRoute from "@/src/components/common/ProtectedRoute";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Download, FileText, Calendar, TrendingUp } from "lucide-react";
+import { toast } from "sonner";
 
 // export const metadata: Metadata = {
 //   title: "Reports | Admin Dashboard",
@@ -39,8 +40,8 @@ const AdminReportsPage = () => {
     },
   ];
 
-  const handleDownload = (type: string) => {
-    console.log(`Downloading ${type} report`);
+  const handleDownload = (type: string)=> {
+    toast.info(`Download pdf functionality for ${type} will be added soon!`)
   };
 
   return (
