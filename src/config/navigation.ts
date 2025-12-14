@@ -42,15 +42,14 @@ export const footerNav = {
   ],
   support: [
     { label: "FAQ", href: PUBLIC_ROUTES.FAQ },
-    { label: "Help Center", href: "/help" },
-    { label: "Privacy Policy", href: "/privacy" },
-    { label: "Terms of Service", href: "/terms" },
+    { label: "Help Center", href: PUBLIC_ROUTES.CONTACT },
+    { label: "Privacy Policy",href: PUBLIC_ROUTES.CONTACT},
+    { label: "Terms of Service", href: "/contact" },
   ],
   discover: [
     { label: "Popular Tours", href: `${PUBLIC_ROUTES.LISTINGS}?sort=popular` },
     { label: "Top Guides", href: `${PUBLIC_ROUTES.GUIDES}?sort=rating` },
     { label: "Featured Experiences", href: `${PUBLIC_ROUTES.LISTINGS}?featured=true` },
-    { label: "Blog", href: "/blog" },
   ],
 };
 

@@ -61,8 +61,8 @@ export const Footer = () => {
           <div>
             <h3 className="text-white font-semibold mb-4">Company</h3>
             <ul className="space-y-2">
-              {footerNav.company.map((item) => (
-                <li key={item.href}>
+              {footerNav.company.map((item,index) => (
+                <li key={index}>
                   <Link
                     href={item.href}
                     className="text-sm hover:text-white transition-colors"
@@ -77,8 +77,8 @@ export const Footer = () => {
           <div>
             <h3 className="text-white font-semibold mb-4">Support</h3>
             <ul className="space-y-2">
-              {footerNav.support.map((item) => (
-                <li key={item.href}>
+              {footerNav.support.map((item,index) => (
+                <li key={index}>
                   <Link
                     href={item.href}
                     className="text-sm hover:text-white transition-colors"
@@ -93,8 +93,8 @@ export const Footer = () => {
           <div>
             <h3 className="text-white font-semibold mb-4">Discover</h3>
             <ul className="space-y-2">
-              {footerNav.discover.map((item) => (
-                <li key={item.href}>
+              {footerNav.discover.map((item,index) => (
+                <li key={index}>
                   <Link
                     href={item.href}
                     className="text-sm hover:text-white transition-colors"
@@ -108,30 +108,11 @@ export const Footer = () => {
         </div>
 
         <div className="border-t border-gray-800 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="mx-auto text-center items-center gap-4">
             <p className="text-sm text-gray-400">
               © {currentYear} {siteConfig.name}. All rights reserved.
             </p>
-            <div className="flex items-center gap-6">
-              <Link
-                href="/privacy"
-                className="text-sm hover:text-white transition-colors"
-              >
-                Privacy Policy
-              </Link>
-              <Link
-                href="/terms"
-                className="text-sm hover:text-white transition-colors"
-              >
-                Terms of Service
-              </Link>
-              <Link
-                href="/cookies"
-                className="text-sm hover:text-white transition-colors"
-              >
-                Cookie Policy
-              </Link>
-            </div>
+            
           </div>
         </div>
       </div>

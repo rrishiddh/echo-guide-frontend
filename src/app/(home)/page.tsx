@@ -16,6 +16,7 @@ import Link from "next/link";
 import FeaturedListings from "@/src/components/listings/FeaturedListings";
 import RecentListings from "@/src/components/listings/RecentListings";
 import PopularListings from "@/src/components/listings/PopularListings";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Echo Guide - Connect with Local Experts",
@@ -66,33 +67,46 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen">
-      <section className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-20 md:py-32">
-        <div className="container px-4">
-          <div className="max-w-3xl mx-auto text-center space-y-6">
-            <h1 className="text-5xl md:text-6xl font-bold leading-tight">
-              Connect with Local Experts
-            </h1>
-            <p className="text-xl md:text-2xl text-blue-100">
-              Discover authentic tours and experiences from passionate local guides around the world
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
-              <Link href="/listings">
-                <Button size="lg" variant="secondary" className="w-full sm:w-auto">
-                  Explore Tours
-                </Button>
-              </Link>
-              <Link href="/become-guide">
-                <Button
-                  size="lg"
-                  className="w-full sm:w-auto bg-white text-blue-600 hover:bg-blue-50"
-                >
-                  Become a Guide
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <section className="relative text-white py-20 md:py-32 overflow-hidden">
+  <div className="absolute inset-0">
+    <Image
+      src="/assets/home/hero-bg.gif"
+      alt="Hero background"
+      className="w-full h-full object-cover object-center"
+      fill
+    />
+    {/* Overlay for readability */}
+    <div className="absolute inset-0 bg-black/50" />
+  </div>
+
+  {/* Content */}
+  <div className="relative container px-4">
+    <div className="max-w-3xl mx-auto text-center space-y-6">
+      <h1 className="text-5xl md:text-6xl font-bold leading-tight">
+        Connect with Local Experts
+      </h1>
+      <p className="text-xl md:text-2xl text-blue-100">
+        Discover authentic tours and experiences from passionate local guides around the world
+      </p>
+      <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
+        <Link href="/listings">
+          <Button size="lg" variant="secondary" className="w-full sm:w-auto">
+            Explore Tours
+          </Button>
+        </Link>
+        <Link href="/become-guide">
+          <Button
+            size="lg"
+            className="w-full sm:w-auto bg-white text-blue-600 hover:bg-blue-50"
+          >
+            Become a Guide
+          </Button>
+        </Link>
+      </div>
+    </div>
+  </div>
+</section>
+
 
       <section className="bg-gray-50 py-16">
         <div className="container px-4">

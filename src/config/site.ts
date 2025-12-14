@@ -13,21 +13,21 @@ export const siteConfig = {
   },
   
   social: {
-    facebook: "https://facebook.com/echoguide",
-    twitter: "https://twitter.com/echoguide",
-    instagram: "https://instagram.com/echoguide",
-    linkedin: "https://linkedin.com/company/echoguide",
-    youtube: "https://youtube.com/@echoguide",
+    facebook: "https://facebook.com/",
+    twitter: "https://twitter.com/",
+    instagram: "https://instagram.com/",
+    linkedin: "https://linkedin.com/company/",
+    youtube: "https://youtube.com/",
   },
   
   links: {
-    github: "https://github.com/echoguide",
-    discord: "https://discord.gg/echoguide",
+    github: "https://github.com/rrishiddh",
+    discord: "https://discord.gg/",
   },
   
   creator: {
     name: "Echo Guide Team",
-    twitter: "@echoguide",
+    twitter: "@rrishiddh",
   },
   
   features: {
@@ -47,9 +47,9 @@ export const siteConfig = {
   },
   
   legal: {
-    termsUrl: "/terms",
-    privacyUrl: "/privacy",
-    cookieUrl: "/cookies",
+    termsUrl: "/faq",
+    privacyUrl: "/faq",
+    cookieUrl: "/faq",
   },
 } as const;
 
