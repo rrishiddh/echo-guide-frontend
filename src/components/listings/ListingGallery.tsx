@@ -26,8 +26,10 @@ export const ListingGallery = ({ images, title }: ListingGalleryProps) => {
     setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
   };
 
-  const displayImages = images.length > 0 ? images : ["/images/placeholder.jpg"];
-
+const displayImages =
+  images?.length > 0
+    ? images
+    : ["/placeholder.png"];
   return (
     <div>
       <div className="grid grid-cols-4 gap-2 h-[400px]">
@@ -69,14 +71,15 @@ export const ListingGallery = ({ images, title }: ListingGalleryProps) => {
                 View All
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-4xl">
-              <div className="relative">
-                <Image
-                  src={displayImages[currentIndex]}
-                  alt={title}
-                  fill
-                  className="w-full h-auto rounded-lg"
-                />
+           <DialogContent className="max-w-4xl">
+  <div className="relative w-full h-[500px]">
+    <Image
+      src={displayImages[currentIndex]}
+      alt={title}
+      fill
+      className="object-contain rounded-lg"
+      sizes="(max-width: 768px) 100vw, 800px"
+    />
                 <div className="absolute inset-0 flex items-center justify-between p-4">
                   <Button
                     variant="secondary"

@@ -191,12 +191,12 @@ const TouristDashboardPage = () => {
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="p-4 border rounded-lg">
-                  <Image
+                  {/* <Image
                     src="/images/placeholder.jpg"
                     alt="Tour"
                     fill
                     className="w-full h-40 object-cover rounded-lg mb-3"
-                  />
+                  /> */}
                   <h3 className="font-semibold text-gray-900 mb-2">
                     Historical Rome Walking Tour
                   </h3>
@@ -210,12 +210,12 @@ const TouristDashboardPage = () => {
                 </div>
 
                 <div className="p-4 border rounded-lg">
-                  <Image
+                  {/* <Image
                     src="/images/placeholder.jpg"
                     alt="Tour"
                     fill
                     className="w-full h-40 object-cover rounded-lg mb-3"
-                  />
+                  /> */}
                   <h3 className="font-semibold text-gray-900 mb-2">
                     Tokyo Night Experience
                   </h3>

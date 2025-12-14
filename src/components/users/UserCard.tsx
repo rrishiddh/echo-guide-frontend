@@ -72,7 +72,7 @@ export const UserCard = ({
             )}
 
             <div className="flex gap-2">
-              <Link href={`/users/${user.id}`} className="flex-1">
+              <Link href={`/dashboard/admin/users/${user.id}`} className="flex-1">
                 <Button variant="outline" size="sm" className="w-full">
                   <ExternalLink className="w-4 h-4 mr-2" />
                   View Profile

@@ -154,12 +154,12 @@ export const CheckoutForm = ({
             )}
           </Button>
 
-          <div className="flex items-center justify-center gap-4 text-xs text-gray-500">
+          {/* <div className="flex items-center justify-center gap-4 text-xs text-gray-500">
             <Image src="/images/visa.svg" alt="Visa" className="h-6" fill/>
             <Image src="/images/mastercard.svg" alt="Mastercard" className="h-6" fill/>
             <Image src="/images/amex.svg" alt="Amex" className="h-6" fill/>
             <span>SSL Secure</span>
-          </div>
+          </div> */}
         </form>
       </CardContent>
     </Card>

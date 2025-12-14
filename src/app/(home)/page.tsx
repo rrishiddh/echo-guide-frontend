@@ -73,6 +73,7 @@ const HomePage = () => {
       src="/assets/home/hero-bg.gif"
       alt="Hero background"
       className="w-full h-full object-cover object-center"
+      unoptimized
       fill
     />
     {/* Overlay for readability */}

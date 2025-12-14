@@ -7,11 +7,11 @@ import BookingChart from "@/src/components/dashboard/BookingChart";
 import RevenueChart from "@/src/components/dashboard/RevenueChart";
 
 export const metadata: Metadata = {
-  title: "Analytics |  Dashboard",
+  title: "Analytics | Admin Dashboard",
   description: "Platform analytics and insights",
 };
 
-const GuideAnalyticsPage = () => {
+const AdminAnalyticsPage = () => {
   const revenueData = [
     { month: "Jan", revenue: 12000, bookings: 45 },
     { month: "Feb", revenue: 15000, bookings: 52 },
@@ -100,4 +100,4 @@ const GuideAnalyticsPage = () => {
   );
 };
 
-export default GuideAnalyticsPage;
+export default AdminAnalyticsPage;

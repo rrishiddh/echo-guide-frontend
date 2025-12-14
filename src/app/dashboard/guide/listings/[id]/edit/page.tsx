@@ -1,40 +1,38 @@
-import { Metadata } from "next";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import PageHeader from "@/src/components/common/PageHeader";
 import ProtectedRoute from "@/src/components/common/ProtectedRoute";
 import { Card, CardContent } from "@/components/ui/card";
 import BackButton from "@/src/components/common/BackButton";
 import ListingForm from "@/src/components/forms/ListingForm";
 import { Listing } from "@/src/types";
-import { TOUR_CATEGORIES } from "@/src/constants";
+import { listingService } from "@/src/services/listing.service";
 
-export const metadata: Metadata = {
-  title: "Edit Tour | Guide Dashboard",
-  description: "Edit your tour listing",
-};
+
 
 const EditListingPage = () => {
-  const mockListing: Listing = {
-    id: "1",
-    guideId: "guide123", 
-    title: "Hidden Jazz Bars of New Orleans",
-    description: "Experience the authentic jazz culture...",
-    itinerary: "Meet at hotel -> Visit Bar 1 -> Visit Bar 2...",
-    tourFee: 75,
-    duration: 4,
-    meetingPoint: "Hotel Lobby",
-    maxGroupSize: 8,
-    category: [TOUR_CATEGORIES.NIGHTLIFE, TOUR_CATEGORIES.CULTURE], 
-    city: "New Orleans",
-    country: "USA",
-    images: ["/images/placeholder.jpg"],
-    status: "active", 
-    totalBookings: 0,
-    totalReviews: 0,       
-    averageRating: 0,
-    isActive: true,        
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
+  const { id } = useParams<{ id: string }>();
+  const [listing, setListing] = useState<Listing | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchListing = async () => {
+      try {
+        const data = await listingService.getListing(id);
+        setListing(data);
+      } catch (error) {
+        console.error("Failed to fetch listing:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchListing();
+  }, [id]);
 
   return (
     <ProtectedRoute allowedRoles={["guide"]}>
@@ -49,7 +47,17 @@ const EditListingPage = () => {
         <div className="container px-4 py-8 max-w-3xl">
           <Card>
             <CardContent className="p-8">
-              <ListingForm listing={mockListing} />
+              {loading ? (
+                <p className="text-center text-gray-500">
+                  Loading tour details...
+                </p>
+              ) : listing ? (
+                <ListingForm listing={listing} />
+              ) : (
+                <p className="text-center text-red-500">
+                  Failed to load listing
+                </p>
+              )}
             </CardContent>
           </Card>
         </div>

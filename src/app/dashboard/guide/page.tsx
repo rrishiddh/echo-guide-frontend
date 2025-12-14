@@ -78,12 +78,12 @@ const stats = [
       href: "/profile",
       icon: "user",
     },
-    {
-      title: "View Earnings",
-      description: "Check your earnings & payouts",
-      href: "/dashboard/guide/earnings",
-      icon: DollarSign,
-    },
+    // {
+    //   title: "View Earnings",
+    //   description: "Check your earnings & payouts",
+    //   href: "/dashboard/guide/earnings",
+    //   icon: DollarSign,
+    // },
   ];
 
   return (

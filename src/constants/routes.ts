@@ -44,7 +44,7 @@ export const DASHBOARD_ROUTES = {
   GUIDE_EDIT_LISTING: (id: string) => `/dashboard/guide/listings/${id}/edit`,
   GUIDE_BOOKINGS: "/dashboard/guide/bookings",
   GUIDE_EARNINGS: "/dashboard/guide/earnings",
-  GUIDE_REVIEWS: "/dashboard/guide/reviews",
+  // GUIDE_REVIEWS: "/dashboard/guide/reviews",
   GUIDE_ANALYTICS: "/dashboard/guide/analytics",
 
   ADMIN: "/dashboard/admin",

@@ -29,7 +29,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
       </div>
 
       <div className="px-4 py-6 text-center text-blue-100 text-sm">
-        <p>&copy; 2024 Echo Guide. All rights reserved.</p>
+        <p>&copy; Echo Guide. All rights reserved.</p>
       </div>
     </div>
   );

@@ -18,7 +18,7 @@ export const FeaturedListings = () => {
 
   const loadListings = async () => {
     try {
-      const data = await listingService.getFeaturedListings(6);
+      const data = await listingService.getPopularListings(6);
       setListings(data);
     } catch (error) {
       console.error("Failed to load featured listings:", error);
@@ -42,7 +42,7 @@ export const FeaturedListings = () => {
           <Award className="w-6 h-6 text-yellow-500" />
           <h2 className="text-2xl font-bold text-gray-900">Featured Tours</h2>
         </div>
-        <Link href="/listings?featured=true">
+        <Link href="/listings?sort=popular">
           <Button variant="outline">View All</Button>
         </Link>
       </div>

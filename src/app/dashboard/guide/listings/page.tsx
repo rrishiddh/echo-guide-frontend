@@ -1,4 +1,6 @@
-import { Metadata } from "next";
+"use client";
+
+import { useEffect, useState } from "react";
 import PageHeader from "@/src/components/common/PageHeader";
 import ProtectedRoute from "@/src/components/common/ProtectedRoute";
 import { Button } from "@/components/ui/button";
@@ -6,49 +8,33 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Plus, MapPin, Eye, Edit, Trash2 } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
 
-export const metadata: Metadata = {
-  title: "My Listings | Guide Dashboard",
-  description: "Manage your tour listings",
-};
+import { listingService } from "@/src/services/listing.service";
+import { Listing } from "@/src/types";
+
 
 const GuideListingsPage = () => {
-  const listings = [
-    {
-      id: "1",
-      title: "Hidden Jazz Bars of New Orleans",
-      city: "New Orleans",
-      price: 75,
-      status: "active",
-      views: 234,
-      bookings: 12,
-      rating: 4.8,
-      image: "/images/placeholder.jpg",
-    },
-    {
-      id: "2",
-      title: "Street Food Tour",
-      city: "Bangkok",
-      price: 50,
-      status: "active",
-      views: 456,
-      bookings: 28,
-      rating: 4.9,
-      image: "/images/placeholder.jpg",
-    },
-    {
-      id: "3",
-      title: "Historical Walking Tour",
-      city: "Rome",
-      price: 65,
-      status: "draft",
-      views: 0,
-      bookings: 0,
-      rating: 0,
-      image: "/images/placeholder.jpg",
-    },
-  ];
+  const [listings, setListings] = useState<Listing[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchListings = async () => {
+      try {
+        const response = await listingService.getAllListings({
+          page: 1,
+          // limit: 20,
+        });
+
+        setListings(response.listings);
+      } catch (error) {
+        console.error("Failed to fetch listings:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchListings();
+  }, []);
 
   return (
     <ProtectedRoute allowedRoles={["guide"]}>
@@ -71,7 +57,11 @@ const GuideListingsPage = () => {
               <CardTitle>Your Tours</CardTitle>
             </CardHeader>
             <CardContent>
-              {listings.length === 0 ? (
+              {loading ? (
+                <p className="text-center py-12 text-gray-500">
+                  Loading listings...
+                </p>
+              ) : listings.length === 0 ? (
                 <div className="text-center py-12">
                   <MapPin className="w-12 h-12 text-gray-300 mx-auto mb-4" />
                   <p className="text-gray-600 mb-4">No tours created yet</p>
@@ -87,12 +77,6 @@ const GuideListingsPage = () => {
                       className="p-4 border rounded-lg hover:border-blue-500 transition-all"
                     >
                       <div className="flex flex-col md:flex-row gap-4">
-                        <Image
-                          src={listing.image}
-                          alt={listing.title}
-                          fill
-                          className="w-full md:w-32 h-32 object-cover rounded-lg"
-                        />
                         <div className="flex-1">
                           <div className="flex items-start justify-between mb-2">
                             <div>
@@ -111,22 +95,19 @@ const GuideListingsPage = () => {
                                 </Badge>
                               </div>
                               <p className="text-sm text-gray-600">
-                                {listing.city} • ${listing.price} per person
+                                {listing.city} • ${listing.tourFee} per person
                               </p>
                             </div>
                           </div>
 
                           <div className="flex flex-wrap gap-6 text-sm text-gray-600 mb-4">
-                            <div className="flex items-center gap-1">
-                              <Eye className="w-4 h-4" />
-                              <span>{listing.views} views</span>
-                            </div>
+                            
                             <div>
-                              <span>{listing.bookings} bookings</span>
+                              <span>{listing.totalBookings ?? 0} bookings</span>
                             </div>
-                            {listing.rating > 0 && (
+                            {listing.averageRating && listing.averageRating > 0 && (
                               <div className="flex items-center gap-1">
-                                <span>⭐ {listing.rating}</span>
+                                <span>⭐ {listing.averageRating}</span>
                               </div>
                             )}
                           </div>

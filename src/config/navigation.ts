@@ -97,11 +97,7 @@ export const guideNav: NavItem[] = [
     href: DASHBOARD_ROUTES.GUIDE_EARNINGS,
     icon: "DollarSign",
   },
-  {
-    label: "Reviews",
-    href: DASHBOARD_ROUTES.GUIDE_REVIEWS,
-    icon: "Star",
-  },
+  
   {
     label: "Analytics",
     href: DASHBOARD_ROUTES.GUIDE_ANALYTICS,

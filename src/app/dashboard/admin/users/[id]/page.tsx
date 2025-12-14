@@ -103,10 +103,10 @@ const AdminUserDetailPage = () => {
                   </Button>
                 )}
 
-                <Button variant="outline">
+                {/* <Button variant="outline">
                   <Edit className="w-4 h-4 mr-2" />
                   Edit Details
-                </Button>
+                </Button> */}
 
                 <Button variant="destructive" onClick={handleDelete}>
                   <Trash2 className="w-4 h-4 mr-2" />

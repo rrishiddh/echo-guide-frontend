@@ -16,8 +16,10 @@ import { User, Mail, Lock, Loader2, AlertCircle } from "lucide-react";
 export const RegisterForm = () => {
   const router = useRouter();
   const { register } = useAuth();
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -25,16 +27,28 @@ export const RegisterForm = () => {
     confirmPassword: "",
     role: "tourist" as "tourist" | "guide",
     bio: "",
+    expertise: [] as string[],
+    dailyRate: undefined as number | undefined,
   });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
     setError("");
+  };
+
+  const handleExpertiseChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const expertiseArray = e.target.value
+      .split(",")
+      .map((item) => item.trim())
+      .filter(Boolean);
+
+    setFormData((prev) => ({
+      ...prev,
+      expertise: expertiseArray,
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -56,13 +70,28 @@ export const RegisterForm = () => {
       return;
     }
 
+    if (formData.role === "guide") {
+      if (!formData.expertise.length) {
+        setError("Please add at least one area of expertise");
+        return;
+      }
+
+      if (!formData.dailyRate || formData.dailyRate <= 0) {
+        setError("Please provide a valid daily rate");
+        return;
+      }
+    }
+
     setIsLoading(true);
 
     try {
       await register(formData);
       router.push("/dashboard");
     } catch (err: any) {
-      setError(err.response?.data?.message || "Registration failed. Please try again.");
+      setError(
+        err.response?.data?.message ||
+          "Registration failed. Please try again."
+      );
     } finally {
       setIsLoading(false);
     }
@@ -77,10 +106,11 @@ export const RegisterForm = () => {
         </Alert>
       )}
 
+      {/* Name */}
       <div className="space-y-2">
         <Label htmlFor="name">Full Name *</Label>
         <div className="relative">
-          <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
           <Input
             id="name"
             name="name"
@@ -94,10 +124,11 @@ export const RegisterForm = () => {
         </div>
       </div>
 
+      {/* Email */}
       <div className="space-y-2">
         <Label htmlFor="email">Email Address *</Label>
         <div className="relative">
-          <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
           <Input
             id="email"
             name="email"
@@ -111,10 +142,11 @@ export const RegisterForm = () => {
         </div>
       </div>
 
+      {/* Password */}
       <div className="space-y-2">
         <Label htmlFor="password">Password *</Label>
         <div className="relative">
-          <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
           <Input
             id="password"
             name="password"
@@ -126,13 +158,16 @@ export const RegisterForm = () => {
             required
           />
         </div>
-        <p className="text-xs text-gray-500">Must be at least 8 characters</p>
+        <p className="text-xs text-gray-500">
+          Must be at least 8 characters
+        </p>
       </div>
 
+      {/* Confirm Password */}
       <div className="space-y-2">
         <Label htmlFor="confirmPassword">Confirm Password *</Label>
         <div className="relative">
-          <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
           <Input
             id="confirmPassword"
             name="confirmPassword"
@@ -146,49 +181,84 @@ export const RegisterForm = () => {
         </div>
       </div>
 
+      {/* Role */}
       <div className="space-y-2">
         <Label>I want to *</Label>
         <RadioGroup
           value={formData.role}
           onValueChange={(value) =>
-            setFormData({ ...formData, role: value as "tourist" | "guide" })
+            setFormData((prev) => ({
+              ...prev,
+              role: value as "tourist" | "guide",
+            }))
           }
         >
-          <div className="flex items-center space-x-2 p-4 border rounded-lg cursor-pointer hover:bg-gray-50">
+          <div className="flex items-center space-x-2 p-4 border rounded-lg">
             <RadioGroupItem value="tourist" id="tourist" />
-            <label htmlFor="tourist" className="flex-1 cursor-pointer">
-              <p className="font-medium">Book Tours</p>
-              <p className="text-sm text-gray-600">
-                Explore and book amazing local experiences
-              </p>
-            </label>
+            <Label htmlFor="tourist" className="cursor-pointer flex-1">
+              Book Tours
+            </Label>
           </div>
-          <div className="flex items-center space-x-2 p-4 border rounded-lg cursor-pointer hover:bg-gray-50">
+
+          <div className="flex items-center space-x-2 p-4 border rounded-lg">
             <RadioGroupItem value="guide" id="guide" />
-            <label htmlFor="guide" className="flex-1 cursor-pointer">
-              <p className="font-medium">Become a Guide</p>
-              <p className="text-sm text-gray-600">
-                Share your knowledge and earn money
-              </p>
-            </label>
+            <Label htmlFor="guide" className="cursor-pointer flex-1">
+              Become a Guide
+            </Label>
           </div>
         </RadioGroup>
       </div>
 
+      {/* Guide Fields */}
       {formData.role === "guide" && (
-        <div className="space-y-2">
-          <Label htmlFor="bio">Bio (Optional)</Label>
-          <Textarea
-            id="bio"
-            name="bio"
-            placeholder="Tell us about yourself and your expertise..."
-            value={formData.bio}
-            onChange={handleChange}
-            rows={4}
-          />
-        </div>
+        <>
+          {/* Bio */}
+          <div className="space-y-2">
+            <Label htmlFor="bio">Bio (Optional)</Label>
+            <Textarea
+              id="bio"
+              name="bio"
+              placeholder="Tell us about yourself..."
+              value={formData.bio}
+              onChange={handleChange}
+            />
+          </div>
+
+          {/* Expertise */}
+          <div className="space-y-2">
+            <Label htmlFor="expertise">Expertise *</Label>
+            <Input
+              id="expertise"
+              type="text"
+              placeholder="History, Food, Adventure"
+              onChange={handleExpertiseChange}
+            />
+            <p className="text-xs text-gray-500">
+              Separate skills with commas
+            </p>
+          </div>
+
+          {/* Daily Rate */}
+          <div className="space-y-2">
+            <Label htmlFor="dailyRate">Daily Rate ($) *</Label>
+            <Input
+              id="dailyRate"
+              type="number"
+              min={0}
+              placeholder="150"
+              value={formData.dailyRate ?? ""}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  dailyRate: Number(e.target.value),
+                }))
+              }
+            />
+          </div>
+        </>
       )}
 
+      {/* Submit */}
       <Button type="submit" className="w-full" size="lg" disabled={isLoading}>
         {isLoading ? (
           <>
@@ -202,7 +272,10 @@ export const RegisterForm = () => {
 
       <p className="text-center text-sm text-gray-600">
         Already have an account?{" "}
-        <Link href="/auth/login" className="text-blue-600 hover:text-blue-700 font-semibold">
+        <Link
+          href="/auth/login"
+          className="text-blue-600 hover:text-blue-700 font-semibold"
+        >
           Sign in
         </Link>
       </p>

@@ -54,9 +54,7 @@ export const GuideList = () => {
         page: pagination.currentPage,
         limit: 12,
         search: debouncedSearch || undefined,
-        sortBy: sortBy,
-        isVerified: true,
-        isActive: true,
+       
       };
 
       const response = await userService.getGuides(query);

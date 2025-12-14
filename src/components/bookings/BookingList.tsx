@@ -67,11 +67,10 @@ export const BookingList = ({ userRole, statusFilter }: BookingListProps) => {
     fetchMyBookings,
   ]);
 
-  // ✅ Now you can safely use it here
   useEffect(() => {
     loadBookings();
   }, [loadBookings]);
-
+// console.log('bookings',bookings)
   return (
     <div className="space-y-6">
       <Card>
