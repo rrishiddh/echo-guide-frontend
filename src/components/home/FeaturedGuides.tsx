@@ -25,7 +25,6 @@ export const FeaturedGuides = () => {
       const response = await userService.getGuides({
         limit: 6,
         sortBy: "-rating",
-        isVerified: true,
       });
       setGuides(response.users as GuideProfile[]);
     } catch (error) {

@@ -1,6 +1,8 @@
 
+import LoadingScreen from "@/src/components/common/LoadingScreen";
 import ResetPasswordForm from "@/src/components/forms/ResetPasswordForm";
 import { Metadata } from "next";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Reset Password | Echo Guide",
@@ -16,8 +18,10 @@ const ResetPasswordPage = () => {
           Enter your new password below
         </p>
       </div>
+      <Suspense fallback={<LoadingScreen />}>
 
-      <ResetPasswordForm />
+      <ResetPasswordForm />      </Suspense>
+
     </div>
   );
 };
