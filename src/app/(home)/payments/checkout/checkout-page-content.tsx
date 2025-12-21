@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+// import { Alert, AlertDescription } from "@/components/ui/alert";
 import PageHeader from "@/src/components/common/PageHeader";
 import ProtectedRoute from "@/src/components/common/ProtectedRoute";
 import BackButton from "@/src/components/common/BackButton";
@@ -12,24 +12,26 @@ import { Lock, AlertCircle, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useBookings } from "@/src/hooks/useBookings";
 import CheckoutForm from "@/src/components/payments/CheckoutForm";
-import StripeCheckout from "@/src/components/payments/StripeCheckout";
-import PriceBreakdown from "@/src/components/payments/PriceBreakdown";
 import PaymentSummary from "@/src/components/payments/PaymentSummary";
+import PriceBreakdown from "@/src/components/payments/PriceBreakdown";
 
 const CheckoutPageContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const bookingId = searchParams.get("bookingId") || "";
-  const clientSecret = searchParams.get("clientSecret");
+  const bookingId = searchParams.get("bookingId");
 
-  const { booking, fetchBooking, isLoading: bookingLoading } = useBookings();
+  const { booking, fetchBooking, isLoading } = useBookings();
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (bookingId) {
-      fetchBooking(bookingId);
+    if (!bookingId) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setError("Missing booking ID");
+      return;
     }
+
+    fetchBooking(bookingId);
   }, [bookingId, fetchBooking]);
 
   const handlePaymentSuccess = () => {
@@ -37,24 +39,23 @@ const CheckoutPageContent = () => {
     router.push(`/payments/success?bookingId=${bookingId}`);
   };
 
-  if (bookingLoading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <Loader2 className="w-12 h-12 animate-spin text-blue-600 mx-auto mb-4" />
-          <p className="text-gray-600">Loading booking details...</p>
-        </div>
+        <Loader2 className="w-10 h-10 animate-spin text-blue-600" />
       </div>
     );
   }
 
-  if (!booking) {
+  if (error || !booking) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <Card className="w-full max-w-md">
           <CardContent className="p-6 text-center">
             <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-            <p className="text-gray-700">Booking not found</p>
+            <p className="text-gray-700">
+              {error || "Booking not found"}
+            </p>
             <Button onClick={() => router.push("/bookings")} className="mt-4">
               Back to Bookings
             </Button>
@@ -67,49 +68,36 @@ const CheckoutPageContent = () => {
   return (
     <ProtectedRoute>
       <div className="min-h-screen bg-gray-50">
-        <PageHeader title="Secure Checkout" description="Complete your booking payment">
+        <PageHeader title="Secure Checkout">
           <BackButton fallbackUrl="/bookings" />
         </PageHeader>
 
         <div className="container px-4 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* LEFT */}
             <div className="lg:col-span-2 space-y-6">
-              {error && (
-                <Alert variant="destructive">
-                  <AlertCircle className="h-4 w-4" />
-                  <AlertDescription>{error}</AlertDescription>
-                </Alert>
-              )}
-
               <CheckoutForm
                 bookingId={booking.id}
                 amount={booking.totalPrice}
                 onSuccess={handlePaymentSuccess}
               />
 
-              {clientSecret && (
-                <StripeCheckout
-                  clientSecret={clientSecret}
-                  amount={booking.totalPrice}
-                  onSuccess={handlePaymentSuccess}
-                />
-              )}
-
               <Card className="bg-green-50 border-green-200">
-                <CardContent className="p-4">
-                  <div className="flex gap-3">
-                    <Lock className="w-5 h-5 text-green-600" />
-                    <div>
-                      <p className="font-medium text-green-900">Secure Payment</p>
-                      <p className="text-sm text-green-800 mt-1">
-                        All transactions are secured with SSL encryption
-                      </p>
-                    </div>
+                <CardContent className="p-4 flex gap-3">
+                  <Lock className="w-5 h-5 text-green-600" />
+                  <div>
+                    <p className="font-medium text-green-900">
+                      Secure Payment
+                    </p>
+                    <p className="text-sm text-green-800">
+                      Payments are encrypted and processed securely
+                    </p>
                   </div>
                 </CardContent>
               </Card>
             </div>
 
+            {/* RIGHT */}
             <div className="space-y-6">
               <PaymentSummary
                 booking={{
@@ -120,7 +108,8 @@ const CheckoutPageContent = () => {
                   time: booking.startTime,
                   duration: booking.listing?.duration || 0,
                   numberOfPeople: booking.numberOfPeople,
-                  location: booking.listing?.meetingPoint || "Location TBD",
+                  location:
+                    booking.listing?.meetingPoint || "Location TBD",
                   basePrice: booking.listing?.tourFee || 0,
                   serviceFee: booking.totalPrice * 0.1,
                   tax: booking.totalPrice * 0.08,

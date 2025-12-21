@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -19,7 +19,7 @@ import { useAuth } from "@/src/hooks/useAuth";
 import { useUserRole } from "@/src/hooks/useUserRole";
 
 export const Navbar = () => {
-  const router = useRouter();
+  // const router = useRouter();
   const { user, isAuthenticated, logout } = useAuth();
   const { role } = useUserRole();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -33,6 +33,8 @@ export const Navbar = () => {
     { label: "Explore Tours", href: "/listings" },
     { label: "Find Guides", href: "/guides" },
     { label: "How It Works", href: "/how-it-works" },
+    { label: "FAQ", href: "/faq" },
+    { label: "Contact-Us", href: "/contact" },
   ];
 
   return (

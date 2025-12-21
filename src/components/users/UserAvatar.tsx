@@ -28,12 +28,12 @@ export const UserAvatar = ({
   return (
     <div className={`relative inline-block ${className}`}>
       <Avatar className={sizeClasses[size]}>
-        <AvatarImage src={user.profilePic} alt={user.name} />
+        <AvatarImage src={user?.profilePic} alt={user?.name} />
         <AvatarFallback className="bg-blue-500 text-white font-semibold">
-          {getInitials(user.name)}
+          {getInitials(user?.name)}
         </AvatarFallback>
       </Avatar>
-      {showBadge && user.isVerified && (
+      {showBadge && user?.isVerified && (
         <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-0.5">
           <CheckCircle className="w-5 h-5 text-green-500 fill-current" />
         </div>

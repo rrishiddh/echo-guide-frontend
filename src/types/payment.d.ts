@@ -49,6 +49,7 @@ export interface CreatePaymentIntentResponse {
 export interface ConfirmPaymentData {
   paymentIntentId: string;
   paymentMethodId?: string;
+  bookingId?: string;
 }
 
 export interface RefundPaymentData {
