@@ -8,7 +8,7 @@ import BackButton from "@/src/components/common/BackButton";
 import { Card, CardContent } from "@/components/ui/card";
 import BookingDetail from "@/src/components/bookings/BookingDetail";
 import LoadingScreen from "@/src/components/common/LoadingScreen";
-
+import { bookingService } from "@/src/services/booking.service";
 import { Booking } from "@/src/types";
 
 const BookingDetailPage = () => {
@@ -17,61 +17,42 @@ const BookingDetailPage = () => {
 
   const [booking, setBooking] = useState<Booking | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    const mockBooking: Booking = {
-      id: bookingId,
+    if (!bookingId) {
+      setError("Booking ID is missing");
+      setIsLoading(false);
+      return;
+    }
 
-      touristId: "user-123",
-      guideId: "1",
-      listingId: "1",
-
-      listing: {
-        id: "1",
-        title: "Hidden Jazz Bars of New Orleans",
-        meetingPoint: "Hotel Lobby, 123 Main St",
-      },
-      guide: {
-        id: "1",
-        name: "John Doe",
-        email: "john@example.com",
-        profilePic: "/images/user-placeholder.png",
-      },
-      tourist: {
-        id: "user-123",
-        name: "Jane Smith",
-        email: "jane@example.com",
-      },
-
-      bookingDate: new Date(Date.now() + 86400000).toISOString(),
-      startTime: "19:00",
-      endTime: "23:00",
-      numberOfPeople: 2,
-      totalPrice: 150,
-      specialRequests: "We would love to visit jazz clubs with live music.",
-      status: "confirmed",
-      paymentStatus: "paid",
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+    const fetchBooking = async () => {
+      try {
+        const data = await bookingService.getBooking(bookingId);
+        setBooking(data);
+      } catch (err) {
+        console.error("Failed to fetch booking:", err);
+        setError("Failed to load booking details");
+      } finally {
+        setIsLoading(false);
+      }
     };
 
-    setTimeout(() => {
-      setBooking(mockBooking);
-      setIsLoading(false);
-    }, 500);
+    fetchBooking();
   }, [bookingId]);
 
   if (isLoading) {
     return <LoadingScreen />;
   }
 
-  if (!booking) {
+  if (error || !booking) {
     return (
       <ProtectedRoute>
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
           <Card>
             <CardContent className="py-12 text-center">
-              <p className="text-gray-600">Booking not found</p>
+              <p className="text-gray-600">{error || "Booking not found"}</p>
+              <BackButton fallbackUrl="/bookings" />
             </CardContent>
           </Card>
         </div>
@@ -82,7 +63,7 @@ const BookingDetailPage = () => {
   return (
     <ProtectedRoute>
       <div className="min-h-screen bg-gray-50">
-        <PageHeader title="Booking Details" description={booking.listing.title}>
+        <PageHeader title="Booking Details" description={booking.listing?.title}>
           <BackButton fallbackUrl="/bookings" />
         </PageHeader>
 

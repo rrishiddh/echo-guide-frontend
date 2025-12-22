@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
@@ -9,22 +10,22 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { CreditCard, Lock } from "lucide-react";
 import { toast } from "sonner";
-import Image from "next/image";
 import { usePayments } from "@/src/hooks/usePayments";
+import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 
 interface CheckoutFormProps {
   bookingId: string;
   amount: number;
+  clientSecret: string;
   onSuccess?: () => void;
 }
 
-export const CheckoutForm = ({
-  bookingId,
-  amount,
-  onSuccess,
-}: CheckoutFormProps) => {
+const CheckoutForm = ({ bookingId, amount, clientSecret, onSuccess }: CheckoutFormProps) => {
   const router = useRouter();
+  const stripe = useStripe();
+  const elements = useElements();
   const { createPaymentIntent, isLoading } = usePayments();
+
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [formData, setFormData] = useState({
     cardholderName: "",
@@ -41,6 +42,11 @@ export const CheckoutForm = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!stripe || !elements) {
+      toast.error("Stripe has not loaded yet");
+      return;
+    }
+
     if (!acceptTerms) {
       toast.error("Please accept the terms and conditions");
       return;
@@ -51,16 +57,35 @@ export const CheckoutForm = ({
       return;
     }
 
+    const cardElement = elements.getElement(CardElement);
+    if (!cardElement) {
+      toast.error("Card element not found");
+      return;
+    }
+
     try {
-      const paymentIntent = await createPaymentIntent({ bookingId });
-      
-      if (onSuccess) {
-        onSuccess();
-      } else {
-        router.push(`/payments/checkout?clientSecret=${paymentIntent.clientSecret}`);
+      const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: cardElement,
+          billing_details: {
+            name: formData.cardholderName,
+            email: formData.email,
+          },
+        },
+      });
+
+      if (error) {
+        toast.error(error.message || "Payment failed");
+        return;
       }
-    } catch (error) {
-      console.error("Payment error:", error);
+
+      if (paymentIntent?.status === "succeeded") {
+        toast.success("Payment successful!");
+        onSuccess?.();
+      }
+    } catch (err: any) {
+      console.error("Payment error:", err);
+      toast.error(err.message || "Payment failed");
     }
   };
 
@@ -99,6 +124,13 @@ export const CheckoutForm = ({
                 onChange={handleChange}
                 required
               />
+            </div>
+
+            <div>
+              <Label>Card Details *</Label>
+              <div className="border rounded-md p-3">
+                <CardElement />
+              </div>
             </div>
           </div>
 
@@ -153,13 +185,6 @@ export const CheckoutForm = ({
               </>
             )}
           </Button>
-
-          {/* <div className="flex items-center justify-center gap-4 text-xs text-gray-500">
-            <Image src="/images/visa.svg" alt="Visa" className="h-6" fill/>
-            <Image src="/images/mastercard.svg" alt="Mastercard" className="h-6" fill/>
-            <Image src="/images/amex.svg" alt="Amex" className="h-6" fill/>
-            <span>SSL Secure</span>
-          </div> */}
         </form>
       </CardContent>
     </Card>
